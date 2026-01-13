@@ -20,7 +20,17 @@ const Post = ({post}) => {
                     <span key={tag} className="badge text-bg-primary hashtag">{tag}</span>
                 ))}
                 <div className="alert alert-success reactions" role="alert">
-                    This post has been reacted by {post.reactions} people.
+                    {(() => {
+                        const r = post.reactions;
+                        if (r == null) return "This post has no reactions yet.";
+                        if (typeof r === "object") {
+                            const likes = Number(r.likes) || 0;
+                            const dislikes = Number(r.dislikes) || 0;
+                            const total = likes + dislikes;
+                            return `This post has been reacted by ${total} people (${likes} likes, ${dislikes} dislikes).`;
+                        }
+                        return `This post has been reacted by ${r} people.`;
+                    })()}
                 </div>
             </div>
         </div>
